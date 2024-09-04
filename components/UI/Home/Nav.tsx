@@ -8,7 +8,7 @@ export default function NavBar() {
   return (
     <nav className="container mx-auto px-4 py-6 flex justify-between items-center">
       <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">
-        ShopifyBlinks
+        Blinkify
       </div>
       <div className="flex items-center gap-4">
         <Button
