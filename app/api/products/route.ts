@@ -14,12 +14,13 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  let url = `https://${shop_url}/admin/api/2024-07/products.json?limit=5`;
+  let url = `https://${shop_url}/admin/api/2024-07/products.json?limit=250`;
 
   try {
     const response = await fetch(url, {
       method: "GET",
       headers: {
+        // "X-Shopify-Access-Token": "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",
         "X-Shopify-Access-Token": token,
         "Content-Type": "application/json",
       },
@@ -35,3 +36,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+// 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
