@@ -2,6 +2,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themeProvider";
 import Footer from "@/components/Fotter";
 import { Metadata } from "next";
+import NavBar from "@/components/UI/Home/Nav";
+import { SessionProvider } from "next-auth/react";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,8 +28,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Footer />
+          <Providers>
+            <NavBar />
+            {children}
+            <Footer />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
