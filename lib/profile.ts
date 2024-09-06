@@ -9,3 +9,9 @@ export interface WalletInfo {
   address: string;
   balance: string;
 }
+
+export interface FormData {
+  email: string;
+  password: string;
+  confirmPassword?: string;
+}
