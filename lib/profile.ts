@@ -7,7 +7,6 @@ export interface ProfileFormData {
 
 export interface WalletInfo {
   address: string;
-  balance: string;
 }
 
 export interface FormData {

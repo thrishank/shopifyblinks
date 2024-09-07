@@ -73,17 +73,14 @@ export function SignUpPage() {
           "Content-Type": "application/json",
         },
       });
-      if (res.status === 200) {
-        await signIn("credentials", {
-          email: formData.email,
-          password: formData.password,
-          redirect: false,
-        });
-        router.push("/profile");
-        toast.success("Signed up successfully", { autoClose: 3000 });
-      } else {
-        toast.error("An error occurred while signing up");
-      }
+
+      await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+      router.push("/profile");
+      toast.success("Signed up successfully", { autoClose: 3000 });
     }
   };
 

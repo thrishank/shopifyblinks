@@ -8,9 +8,12 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 Int      @id @default(autoincrement())
+  email              String   @unique
+  password           String
+  shopifyAccessToken String?
+  shopifyWebsite     String?
+  walletAddress      String?
+  currency           String?
+  createdAt          DateTime @default(now())
 }

@@ -29,8 +29,7 @@ export default function Page() {
     setSelectedProduct(product);
     setIsGenerating(true);
     setGeneratedLink("");
-
-    // Simulate API call to generate Blink
+    
     setTimeout(() => {
       setIsGenerating(false);
       setGeneratedLink(
