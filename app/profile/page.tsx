@@ -1,10 +1,5 @@
-// https://791225-45.myshopify.com/admin/api/2024-07/shop.json
-
 import React from "react";
 import { ProfileForm } from "@/components/UI/profile/Form";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -13,12 +8,12 @@ import {
   CardTitle,
 } from "@/components/common/card";
 import { TooltipProvider } from "@/components/common/tooltip";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
-  if (!session?.user) {
-    redirect("/login");
-  }
+
   return (
     <TooltipProvider>
       <div className="container mx-auto px-4 py-8">
@@ -33,7 +28,7 @@ export default async function ProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ProfileForm />
+              <ProfileForm session={session} />
             </CardContent>
           </Card>
         </div>

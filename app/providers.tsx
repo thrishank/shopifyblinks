@@ -1,11 +1,3 @@
-// providers.tsx
-// "use client";
-// import { SessionProvider } from "next-auth/react";
-
-// export function Providers({ children }: { children: React.ReactNode }) {
-//   return <SessionProvider>{children}</SessionProvider>;
-// }
-
 "use client";
 import { clusterApiUrl } from "@solana/web3.js";
 import { SessionProvider } from "next-auth/react";
@@ -13,12 +5,12 @@ import { useMemo } from "react";
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
-  MathWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
+import { ThemeProvider } from "@/components/themeProvider";
 
 require("@solana/wallet-adapter-react-ui/styles.css");
 
@@ -31,11 +23,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <SessionProvider>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect>
-          {children}
-        </WalletProvider>
-      </ConnectionProvider>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            {children}
+          </WalletProvider>
+        </ConnectionProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 }

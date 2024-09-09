@@ -3,13 +3,6 @@ import { Button } from "@/components/common/button";
 import { Input } from "@/components/common/input";
 import { Label } from "@/components/common/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/common/select";
-import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -22,17 +15,18 @@ import "react-toastify/dist/ReactToastify.css";
 import { ProfileFormData, WalletInfo } from "@/lib/profile";
 import { validateEmail, validateUrl } from "@/lib/utils";
 import { useState } from "react";
-import { signIn, useSession } from "next-auth/react";
-import axios from "axios";
-import { Sign } from "crypto";
+import { signIn } from "next-auth/react";
 
-export function ProfileForm() {
-  const session = useSession();
-
+export function ProfileForm({ session }: any) {
   const [formData, setFormData] = useState<ProfileFormData>({
     shopifyAccessToken: "",
     shopifyWebsiteUrl: "",
   });
+
+  if (session.user) {
+    formData.shopifyAccessToken = session.user.accessToken;
+    formData.shopifyWebsiteUrl = session.user.shopifyWebsiteUrl;
+  }
 
   const [errors, setErrors] = useState<Partial<ProfileFormData>>({});
   const [showToken, setShowToken] = useState(false);
