@@ -1,67 +1,89 @@
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient();
+interface User {
+  id: string;
+  accessToken: string;
+  shopifyWebsiteUrl: string;
+}
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "Access Token",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "example@example.com",
+        accessToken: {
+          label: "Access Token",
+          type: "text",
+          placeholder: "Enter your access token",
         },
-        password: { label: "Password", type: "password" },
+        shopifyWebsiteUrl: {
+          label: "Shopify Website URL",
+          type: "text",
+          placeholder: "Enter your Shopify website URL",
+        },
       },
-      async authorize(credentials) {
-        const { email, password } = credentials || {};
-
-        if (!email || !password) {
-          throw new Error("Email and password required");
+      async authorize(credentials): Promise<User | null> {
+        const { accessToken, shopifyWebsiteUrl } = credentials || {};
+        if (!accessToken || !shopifyWebsiteUrl) {
+          throw new Error("Access token and Shopify website URL are required");
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email },
-        });
+        // async function verifyTokenWithShopify(
+        //   token: string,
+        //   url: string
+        // ): Promise<boolean> {
+        //   try {
+        //     const response = await fetch(`${url}/admin/api/2023-04/shop.json`, {
+        //       headers: {
+        //         "X-Shopify-Access-Token": token,
+        //       },
+        //     });
+        //     return response.ok;
+        //   } catch (error) {
+        //     console.error("Error verifying token:", error);
+        //     return false;
+        //   }
+        // }
 
-        if (!user) {
-          throw new Error("No user found with this email");
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordValid) {
-          throw new Error("Invalid password");
-        }
+        // const isValid = await verifyTokenWithShopify(
+        //   accessToken,
+        //   shopifyWebsiteUrl
+        // );
+        // if (!isValid) {
+        //   throw new Error("Invalid access token");
+        // }
 
         return {
-          id: user.id,
-          email: user.email,
+          id: "1", // You might want to generate a unique ID here
+          accessToken,
+          shopifyWebsiteUrl,
         };
       },
     }),
   ],
   callbacks: {
-    async session({ session, token }: any) {
-      if (session.user) {
-        session.user = {
-          email: session.user.email,
-        };
-      }
-      return session;
+    async session({ session, token }): Promise<any> {
+      return {
+        ...session,
+        user: {
+          id: token.id,
+          accessToken: token.accessToken,
+          shopifyWebsiteUrl: token.shopifyWebsiteUrl,
+        },
+      };
     },
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.id = user.id;
+        token.accessToken = user.accessToken;
+        token.shopifyWebsiteUrl = user.shopifyWebsiteUrl;
       }
       return token;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: "/login",
+    signIn: "/profile",
   },
 };

@@ -22,9 +22,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { ProfileFormData, WalletInfo } from "@/lib/profile";
 import { validateEmail, validateUrl } from "@/lib/utils";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { PrismaClient } from "@prisma/client";
+import { signIn, useSession } from "next-auth/react";
 import axios from "axios";
+import { Sign } from "crypto";
 
 export function ProfileForm() {
   const session = useSession();
@@ -32,9 +32,8 @@ export function ProfileForm() {
   const [formData, setFormData] = useState<ProfileFormData>({
     shopifyAccessToken: "",
     shopifyWebsiteUrl: "",
-    email: session.data?.user?.email || "",
-    defaultCurrency: "USD",
   });
+
   const [errors, setErrors] = useState<Partial<ProfileFormData>>({});
   const [showToken, setShowToken] = useState(false);
   const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
@@ -66,9 +65,17 @@ export function ProfileForm() {
       return;
     }
     setIsSubmitting(true);
-    const email = session.data?.user?.email || "";
     try {
-      const res = await axios.put("/api/profile", { formData, walletInfo });
+      const res = await signIn("credentials", {
+        redirect: false,
+        accessToken: formData.shopifyAccessToken,
+        shopifyWebsiteUrl: formData.shopifyWebsiteUrl,
+      });
+      if (!res!.ok) {
+        toast.error("Invalid access token or Shopify website URL");
+        setIsSubmitting(false);
+        return;
+      }
       setIsSubmitting(false);
       toast.success("Profile updated successfully!");
     } catch (e) {
@@ -135,52 +142,11 @@ export function ProfileForm() {
         )}
       </div>
 
-      <div>
-        <Label>Wallet Connection</Label>
-        {/* <WalletConnect
-          onConnect={(info) => setWalletInfo(info)}
-          onDisconnect={() => setWalletInfo(null)}
-        /> */}
-        <Input
-          id="walletadress"
-          name="walletadress"
-          type="text"
-          onChange={(e) => setWalletInfo({ address: e.target.value })}
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="email">Email Address</Label>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          value={session.data?.user?.email || ""}
-          onChange={handleInputChange}
-        />
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-        )}
-      </div>
-
-      <div>
-        <Label htmlFor="defaultCurrency">Default Currency</Label>
-        <Select
-          value={formData.defaultCurrency}
-          onValueChange={(value: any) =>
-            setFormData((prev) => ({ ...prev, defaultCurrency: value }))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select a currency" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="USD">USD</SelectItem>
-            <SelectItem value="EUR">EUR</SelectItem>
-            <SelectItem value="SOL">SOL</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      <Label>Wallet Connection</Label>
+      <WalletConnect
+        onConnect={(info) => setWalletInfo(info)}
+        onDisconnect={() => setWalletInfo(null)}
+      />
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (

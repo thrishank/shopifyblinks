@@ -1,77 +1,87 @@
-import React, { useState, useCallback } from "react";
+"use client";
+import React, { useCallback, useEffect, useRef } from "react";
 import { Button } from "@/components/common/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/common/card";
 import { Loader2, Wallet } from "lucide-react";
 import { WalletInfo } from "@/lib/profile";
 import { useWallet } from "@solana/wallet-adapter-react";
+import {
+  WalletMultiButton,
+  WalletModalProvider,
+} from "@solana/wallet-adapter-react-ui";
+
+// Import the wallet adapter styles
+import "@solana/wallet-adapter-react-ui/styles.css";
 
 interface WalletConnectProps {
   onConnect: (walletInfo: WalletInfo) => void;
   onDisconnect: () => void;
 }
 
-export const WalletConnect: React.FC<WalletConnectProps> = ({
-  onConnect,
-  onDisconnect,
-}) => {
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
-  const [error, setError] = useState<string | null>(null);
+export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
+  const { publicKey, connected, disconnect } = useWallet();
+  const prevConnectedRef = useRef(connected);
+  const prevPublicKeyRef = useRef(publicKey);
 
-  const handleConnect = useCallback(async () => {
-    setIsConnecting(true);
-    setError(null);
+  useEffect(() => {
+    if (
+      connected !== prevConnectedRef.current ||
+      publicKey !== prevPublicKeyRef.current
+    ) {
+      prevConnectedRef.current = connected;
+      prevPublicKeyRef.current = publicKey;
 
-    try {
-      // setTimeout(() => {
-      //   const mockWalletInfo: WalletInfo = {
-      //     address: wallet.adapter.publicKey?.toBase58() || "Unknown",
-      //   };
-      //   setWalletInfo(mockWalletInfo);
-      //   onConnect(mockWalletInfo);
-      //   setIsConnecting(false);
-      // }, 2000);
-    } catch (err) {
-      setError("Failed to connect wallet. Please try again.");
-      setIsConnecting(false);
+      if (connected && publicKey) {
+        const walletInfo: WalletInfo = {
+          address: publicKey.toBase58(),
+        };
+        onConnect(walletInfo);
+      } else if (!connected) {
+        onDisconnect();
+      }
     }
-  }, [onConnect]);
-
-  if (walletInfo) {
-    return (
-      <div className="flex items-center justify-between p-4 bg-purple-100 dark:bg-purple-900 rounded-lg">
-        <div>
-          <p className="text-sm font-medium text-purple-800 dark:text-purple-200">
-            Connected Wallet
-          </p>
-          <p className="text-xs text-purple-600 dark:text-purple-300">
-            {walletInfo.address}
-          </p>
-        </div>
-        <Button
-          variant="outline"
-          className="text-red-500 border-red-500 hover:bg-red-100 dark:hover:bg-red-900"
-        >
-          Disconnect
-        </Button>
-      </div>
-    );
-  }
+  }, [connected, publicKey, onConnect, onDisconnect]);
 
   return (
-    <div>
-      <Button
-        onClick={handleConnect}
-        disabled={isConnecting}
-        className="w-full"
-      >
-        {isConnecting ? (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Wallet className="mr-2 h-4 w-4" />
-        )}
-        {isConnecting ? "Connecting..." : "Connect Wallet"}
-      </Button>
-      {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
-    </div>
+    <Card className="shadow-md">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-purple-700 dark:text-purple-300">
+          Wallet Connection
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-4">
+        <WalletModalProvider>
+          {connected && publicKey ? (
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Connected Wallet
+                </p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 break-all">
+                  {publicKey.toBase58()}
+                </p>
+              </div>
+              <div className="flex space-x-2">
+                <WalletMultiButton className="flex-1" />
+                <Button
+                  variant="outline"
+                  className="flex-1 text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  onClick={disconnect}
+                >
+                  Disconnect
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <WalletMultiButton className="w-full" />
+          )}
+        </WalletModalProvider>
+      </CardContent>
+    </Card>
   );
-};
+}
