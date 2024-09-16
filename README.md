@@ -4,16 +4,21 @@
 - Record a demo video and write a medium blog
 - update the UI/UX
 
+# Testing credantials
+
+```
+access_token: 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
+shop: https://solanablinks.myshopify.com/
+```
+
 # Blinkify
 
 Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
 
 ## Features
 
-- Shopify integration
+- Shopify and wallet integration
 - Solana Blinks generation
-- Dark mode support
-- Responsive design
 
 ## Getting Started
 
@@ -94,6 +99,7 @@ The project follows a typical Next.js structure with some additional directories
 - Prisma
 - NextAuth.js
 - Solana Web3.js
+- Solana Actions
 - Shopify API
 
 ## Contributing
