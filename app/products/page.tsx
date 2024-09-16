@@ -4,6 +4,8 @@ import { ProductCard } from "@/components/UI/Product/ProductCard";
 import { Product } from "@/lib/products";
 import { useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -61,6 +63,13 @@ export default function Page() {
       progress: undefined,
     });
   };
+
+  useSession({
+    required: true,
+    onUnauthenticated() {
+      redirect("/profile");
+    },
+  });
 
   return (
     <div className={`min-h-screen`}>

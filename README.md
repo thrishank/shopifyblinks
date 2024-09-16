@@ -1,7 +1,11 @@
 # Todo
 
-- Build a intertisital site like dial.to
+- Transaction Verifcation also test with different values
+- Input validation for access_token and shopify_website_url in next-auth authoptions file
+- change the content of the home page
 - Record a demo video and write a medium blog
+- create a page for generated blinks. Store the blinks url in db after generation
+- Build a intertisital site like dial.to
 - update the UI/UX
 
 # Testing credantials

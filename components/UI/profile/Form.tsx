@@ -5,7 +5,6 @@ import { Label } from "@/components/common/label";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/common/tooltip";
 import { WalletConnect } from "./WalletConnect";
@@ -15,23 +14,25 @@ import "react-toastify/dist/ReactToastify.css";
 import { ProfileFormData, WalletInfo } from "@/lib/profile";
 import { validateEmail, validateUrl } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
-export function ProfileForm({ session }: any) {
+export default function ProfileForm() {
   const [formData, setFormData] = useState<ProfileFormData>({
     shopifyAccessToken: "",
     shopifyWebsiteUrl: "",
   });
 
+  const { data: session, status } = useSession();
+
   useEffect(() => {
-    if (session.user) {
+    if (status === "authenticated") {
       setFormData((prev) => ({
         ...prev,
         shopifyAccessToken: session.user.accessToken,
         shopifyWebsiteUrl: session.user.shopifyWebsiteUrl,
       }));
     }
-  }, [session.user]);
+  }, [status]);
 
   const [errors, setErrors] = useState<Partial<ProfileFormData>>({});
   const [showToken, setShowToken] = useState(false);

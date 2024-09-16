@@ -1,46 +1,41 @@
-import { CheckCircle } from "lucide-react";
-import Image from "next/image";
+import { Link, Shield, Zap } from "lucide-react";
 
 export default function Blinks() {
+  const features = [
+    {
+      icon: Link,
+      text: "No need to leave the current platform to approve payments.",
+    },
+    { icon: Zap, text: "Compatible with popular crypto wallets like Phantom." },
+    {
+      icon: Shield,
+      text: "Secure and seamless transactions for your customers.",
+    },
+  ];
+
   return (
-    <section className="py-20 bg-gradient-to-b from-blue-50 to-purple-50 dark:from-gray-900 dark:to-purple-900 transition-colors duration-300">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-12 text-center text-purple-900 dark:text-purple-100">
+    <section className="py-16 bg-purple-50 dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white text-center mb-8">
           What are Solana Blinks?
         </h2>
-        <div className="flex flex-col md:flex-row items-center gap-12">
-          <div className="md:w-1/2">
-            <p className="text-lg mb-6 text-gray-700 dark:text-gray-300">
-              Solana Blinks are shareable URLs that enable direct interaction
-              with the Solana blockchain from platform live X. They simplify
-              complex blockchain operations into a single click.
-            </p>
-            <ul className="space-y-4">
-              {[
-                "Purchase products instantly",
-                "Trade NFTs seamlessly",
-                "Send token tips effortlessly",
-                "Participate in governance voting",
-              ].map((item, index) => (
-                <li
-                  key={index}
-                  className="flex items-center text-gray-700 dark:text-gray-300"
-                >
-                  <CheckCircle className="mr-2 h-5 w-5 text-green-500 dark:text-green-400" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="md:w-1/2">
-            <Image
-              src="/image.png"
-              width={500}
-              height={300}
-              alt="Solana Blinks Diagram"
-              className="rounded-lg shadow-lg dark:opacity-80"
-            />
-          </div>
+        <p className="text-xl text-gray-600 dark:text-gray-300 text-center mb-12 max-w-3xl mx-auto">
+          Blinks are Blockchain Links that allow users to perform
+          blockchain-based transactions instantly and interactively through
+          shareable URLs. These links can be embedded on platforms like X
+          (formerly Twitter) or any webpage.
+        </p>
+        <div className="grid md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <div className="bg-purple-100 dark:bg-purple-800 rounded-full p-3 mb-4">
+                <feature.icon className="h-6 w-6 text-purple-600 dark:text-purple-300" />
+              </div>
+              <p className="text-center text-gray-600 dark:text-gray-300">
+                {feature.text}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

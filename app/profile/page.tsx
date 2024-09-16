@@ -1,5 +1,6 @@
+"use client"
 import React from "react";
-import { ProfileForm } from "@/components/UI/profile/Form";
+import ProfileForm from "@/components/UI/profile/Form";
 import {
   Card,
   CardContent,
@@ -8,12 +9,8 @@ import {
   CardTitle,
 } from "@/components/common/card";
 import { TooltipProvider } from "@/components/common/tooltip";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 
-export default async function ProfilePage() {
-  const session = await getServerSession(authOptions);
-  
+export default function ProfilePage() {
   return (
     <TooltipProvider>
       <div className="container mx-auto px-4 py-8">
@@ -28,7 +25,7 @@ export default async function ProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ProfileForm session={session} />
+              <ProfileForm />
             </CardContent>
           </Card>
         </div>
