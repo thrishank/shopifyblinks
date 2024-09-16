@@ -1,3 +1,5 @@
+import { decryptApiKey } from "@/lib/encrypt";
+import { PrismaClient } from "@prisma/client";
 import {
   createActionHeaders,
   NextActionPostRequest,
@@ -5,6 +7,7 @@ import {
   CompletedAction,
 } from "@solana/actions";
 import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import axios from "axios";
 
 const headers = createActionHeaders();
 
@@ -17,9 +20,27 @@ export const GET = async (req: Request) => {
 
 export const OPTIONS = async () => Response.json(null, { headers });
 
+interface dataType {
+  email: string;
+  phone?: string;
+  name: string;
+  address: string;
+  state?: string;
+  zip?: string;
+  city?: string;
+  country?: string;
+}
+const prisma = new PrismaClient();
 export const POST = async (req: Request) => {
   try {
     const url = new URL(req.url);
+
+    const data: dataType = JSON.parse(url.searchParams.get("data")!);
+    const id = url.searchParams.get("id")!;
+
+    const db_data = await prisma.blink.findUnique({
+      where: { id },
+    });
 
     const body: NextActionPostRequest = await req.json();
 
@@ -38,14 +59,9 @@ export const POST = async (req: Request) => {
       throw 'Invalid "signature" provided';
     }
 
-    const connection = new Connection(
-      process.env.SOLANA_RPC! || clusterApiUrl("devnet")
-    );
-
-    /**
-     * todo: do we need to manually re-confirm the transaction?
-     * todo: do we need to perform multiple confirmation attempts
-     */
+    const connection = new Connection(clusterApiUrl("devnet"), {
+      commitment: "confirmed",
+    });
 
     try {
       let status = await connection.getSignatureStatus(signature);
@@ -78,7 +94,6 @@ export const POST = async (req: Request) => {
      * todo: validate this transaction is what you expected the user to perform in the previous step
      */
 
-    // manually get the transaction to process and verify it
     const transaction = await connection.getParsedTransaction(
       signature,
       "confirmed"
@@ -86,21 +101,61 @@ export const POST = async (req: Request) => {
 
     console.log("transaction: ", transaction);
 
-    /**
-     * returning a `CompletedAction` allows you to update the
-     * blink metadata but not allow the user to perform any
-     * follow on actions or user input
-     *
-     * you can update any of these details
-     */
+    const orderData = {
+      order: {
+        email: data.email,
+        fulfillment_status: "fulfilled",
+        send_receipt: true,
+        notify_customer: true,
+        line_items: [
+          {
+            variant_id: 45614942421220,
+            quantity: 1,
+          },
+        ],
+        shipping_address: {
+          first_name: data.name,
+          address1: data.country,
+          phone: data.phone,
+          city: data.city,
+          province: data.state,
+          country: data.country,
+          zip: data.zip,
+        },
+        note: "Ordered via Solana blinks",
+        note_attributes: [
+          {
+            name: "payment_method",
+            value: "cryptocurrency",
+          },
+          {
+            name: "Transaction Signature",
+            value: signature,
+          },
+          {
+            name: "payer wallet address",
+            value: account.toBase58(),
+          },
+        ],
+      },
+    };
+
+    const shopifyWebsiteUrl = `${db_data?.website_url}/admin/api/2024-07/orders.json`;
+    const token = decryptApiKey(db_data?.accessToken!);
+
+    axios.post(shopifyWebsiteUrl, JSON.stringify(orderData), {
+      headers: {
+        "X-Shopify-Access-Token": token,
+        "Content-Type": "application/json",
+      },
+    });
+
     const payload: CompletedAction = {
       type: "completed",
-      title: "Chaining was successful!",
-      icon: "",
+      title: "Order Created Successfully",
+      icon: "https://i.sstatic.net/YbIni.png",
       label: "Complete!",
-      description:
-        `You have now completed an action chain! ` +
-        `Here was the signature from the last action's transaction: ${signature} `,
+      description: `Your order has been created successfully. Please check your email for confirmation.`,
     };
 
     return Response.json(payload, {

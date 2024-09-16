@@ -14,5 +14,7 @@ model Blink {
   image        String?
   price        String
   walletAddres String
+  accessToken  String
+  website_url  String
   createdAt    DateTime @default(now())
 }

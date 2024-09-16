@@ -41,7 +41,7 @@ export default function Page() {
       wallet: publicKey?.toBase58(),
     };
 
-    const res = await axios.post(`/api/blink/create`, JSON.stringify(metadata));
+    const res = await axios.post(`/blink/create`, JSON.stringify(metadata));
 
     setTimeout(() => {
       setIsGenerating(false);

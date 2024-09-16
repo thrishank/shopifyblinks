@@ -77,6 +77,12 @@ type ProfileMenuProps = {
 
 function ProfileMenu({ navItems, isAuthenticated }: ProfileMenuProps) {
   const { data: session } = useSession();
+  const { disconnect } = useWallet();
+
+  const handleSignOut = async () => {
+    await signOut();
+    disconnect();
+  };
 
   return (
     <DropdownMenu>
@@ -101,6 +107,10 @@ function ProfileMenu({ navItems, isAuthenticated }: ProfileMenuProps) {
                 </Link>
               </DropdownMenuItem>
             ))}
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <button onClick={handleSignOut}>Signout</button>
+            </DropdownMenuItem>
           </>
         ) : (
           <>

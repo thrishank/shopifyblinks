@@ -17,7 +17,6 @@ import {
   createTransferInstruction,
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
-import { get } from "http";
 
 const headers = createActionHeaders();
 const prisma = new PrismaClient();
@@ -47,10 +46,31 @@ export async function GET(req: Request) {
           {
             label: `Buy Now ${data.price}`,
             href: new URL(
-              `/api/blink?to=${data.walletAddres}&price=${data.price}`,
+              `/blink?to=${data.walletAddres}&price=${data.price}&id=${id}`,
               req.url
             ).toString(),
             parameters: [
+              {
+                name: "email",
+                type: "email",
+                label: "Enter your email",
+                required: true,
+              },
+              // {
+              //   type: "checkbox",
+              //   name: "subscription",
+              //   options: [
+              //     {
+              //       label: "Email me with news and offers",
+              //       value: "yes",
+              //     },
+              //   ],
+              // },
+              {
+                name: "phone",
+                type: "number",
+                label: "phone number with country code",
+              },
               {
                 name: "name",
                 type: "text",
@@ -60,7 +80,7 @@ export async function GET(req: Request) {
               {
                 name: "adress",
                 type: "textarea",
-                label: "Enter your street address",
+                label: "Address",
                 required: true,
               },
               {
@@ -70,24 +90,18 @@ export async function GET(req: Request) {
               },
               {
                 name: "zip",
-                label: "Enter your zip",
+                label: "PIN CODE",
+                type: "text",
+              },
+              {
+                name: "city",
+                label: "city",
                 type: "text",
               },
               {
                 name: "country",
-                label: "Enter your country",
+                label: "country/Region",
                 type: "text",
-              },
-              {
-                name: "agree",
-                type: "checkbox",
-                label: "I agree to the terms and conditions",
-                options: [
-                  {
-                    label: "Yes",
-                    value: "yes",
-                  },
-                ],
               },
             ],
           },
@@ -111,9 +125,10 @@ export async function POST(req: Request) {
     const url = new URL(req.url);
     const to = new PublicKey(url.searchParams.get("to")!);
     const price = parseFloat(url.searchParams.get("price")!);
+    const id = url.searchParams.get("id")!;
 
     const body: ActionPostRequest = await req.json();
-
+    console.log(body.data);
     const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
     let account: PublicKey;
@@ -129,7 +144,7 @@ export async function POST(req: Request) {
       await connection.getLatestBlockhash();
 
     const mint_address = new PublicKey(
-      // "SENDdRQtYMWaQrBroBrJ2Q53fgVuq95CV9UPGEvpCxa"
+      // "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
       "9jyEAn15hMY7f5iKdUTPE5ZGaxD4BfsbHggwHFYvgF61"
     );
 
@@ -167,11 +182,14 @@ export async function POST(req: Request) {
     const payload: ActionPostResponse = await createPostResponse({
       fields: {
         transaction: tx,
-        message: "verifying the transaction",
+        message:
+          "If your transaction is successful and if you haven't received the confirmation email, please contact us at",
         links: {
           next: {
             type: "post",
-            href: `/api/blink/confirm?price=${price}&to=${to.toString()}`,
+            href: `/blink/confirm?&data=${JSON.stringify(
+              body.data
+            )}&id=${id}`,
           },
         },
       },
