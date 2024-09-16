@@ -1,14 +1,5 @@
 "use client";
-import {
-  Moon,
-  Sun,
-  User,
-  Package,
-  ClipboardList,
-  LogIn,
-  UserPlus,
-  LogOut,
-} from "lucide-react";
+import { Moon, Sun, User, Package, Link2 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/common/button";
 import Link from "next/link";
@@ -20,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/common/dropdown-menu";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 type NavItem = {
   href: string;
@@ -30,20 +22,11 @@ type NavItem = {
 const authenticatedNavItems: NavItem[] = [
   { href: "/profile", label: "Profile", icon: User },
   { href: "/products", label: "Products", icon: Package },
-  { href: "/orders", label: "Orders", icon: ClipboardList },
-];
-
-const unauthenticatedNavItems: NavItem[] = [
-  { href: "/login", label: "Login", icon: LogIn },
-  { href: "/signup", label: "Signup", icon: UserPlus },
+  { href: "/Blinks", label: "Your Blinks", icon: Link2 },
 ];
 
 export default function NavBar() {
-  const { status } = useSession();
-  const navItems =
-    status === "authenticated"
-      ? authenticatedNavItems
-      : unauthenticatedNavItems;
+  const navItems = authenticatedNavItems;
 
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md">
@@ -52,10 +35,7 @@ export default function NavBar() {
           Blinkify
         </div>
         <div className="flex items-center space-x-4">
-          <ProfileMenu
-            navItems={navItems}
-            isAuthenticated={status === "authenticated"}
-          />
+          <ProfileMenu navItems={navItems} isAuthenticated={true} />
           <ModeToggle />
         </div>
       </div>
@@ -121,11 +101,6 @@ function ProfileMenu({ navItems, isAuthenticated }: ProfileMenuProps) {
                 </Link>
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => signOut()}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Log out</span>
-            </DropdownMenuItem>
           </>
         ) : (
           <>

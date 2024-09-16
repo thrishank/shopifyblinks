@@ -3,13 +3,21 @@ import {
   ActionError,
   ActionGetResponse,
   ActionPostRequest,
+  ActionPostResponse,
   createActionHeaders,
+  createPostResponse,
 } from "@solana/actions";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import {
+  clusterApiUrl,
+  Connection,
+  PublicKey,
+  Transaction,
+} from "@solana/web3.js";
 import {
   createTransferInstruction,
   getAssociatedTokenAddress,
 } from "@solana/spl-token";
+import { get } from "http";
 
 const headers = createActionHeaders();
 const prisma = new PrismaClient();
@@ -39,7 +47,7 @@ export async function GET(req: Request) {
           {
             label: `Buy Now ${data.price}`,
             href: new URL(
-              `/api/blink?email=${data.email}&to=${data.walletAddres}&price=${data.price}`,
+              `/api/blink?to=${data.walletAddres}&price=${data.price}`,
               req.url
             ).toString(),
             parameters: [
@@ -101,7 +109,6 @@ export async function OPTIONS() {
 export async function POST(req: Request) {
   try {
     const url = new URL(req.url);
-    const email = url.searchParams.get("email");
     const to = new PublicKey(url.searchParams.get("to")!);
     const price = parseFloat(url.searchParams.get("price")!);
 
@@ -142,6 +149,35 @@ export async function POST(req: Request) {
         headers,
       });
     }
+    const toAddr = await getAssociatedTokenAddress(mint_address, to);
+
+    const instruction = createTransferInstruction(
+      from,
+      toAddr,
+      account,
+      price * 1_000_000
+    );
+
+    const tx = new Transaction({
+      feePayer: account,
+      blockhash,
+      lastValidBlockHeight,
+    }).add(instruction);
+
+    const payload: ActionPostResponse = await createPostResponse({
+      fields: {
+        transaction: tx,
+        message: "verifying the transaction",
+        links: {
+          next: {
+            type: "post",
+            href: `/api/blink/confirm?price=${price}&to=${to.toString()}`,
+          },
+        },
+      },
+    });
+
+    return Response.json(payload, { headers });
   } catch (e) {
     console.log(e);
     let message = "An unknown error occurred";

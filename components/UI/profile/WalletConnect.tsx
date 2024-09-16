@@ -24,10 +24,11 @@ interface WalletConnectProps {
 }
 
 export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
-  const { publicKey, connected, disconnect } = useWallet();
+  const { publicKey, connected, disconnect, autoConnect } = useWallet();
   const prevConnectedRef = useRef(connected);
   const prevPublicKeyRef = useRef(publicKey);
 
+  console.log(publicKey, connected, autoConnect);
   useEffect(() => {
     if (
       connected !== prevConnectedRef.current ||
@@ -55,32 +56,30 @@ export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4">
-        <WalletModalProvider>
-          {connected && publicKey ? (
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Connected Wallet
-                </p>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 break-all">
-                  {publicKey.toBase58()}
-                </p>
-              </div>
-              <div className="flex space-x-2">
-                <WalletMultiButton className="flex-1" />
-                <Button
-                  variant="outline"
-                  className="flex-1 text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
-                  onClick={disconnect}
-                >
-                  Disconnect
-                </Button>
-              </div>
+        {connected && publicKey ? (
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Connected Wallet
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 break-all">
+                {publicKey.toBase58()}
+              </p>
             </div>
-          ) : (
-            <WalletMultiButton className="w-full" />
-          )}
-        </WalletModalProvider>
+            <div className="flex space-x-2">
+              <WalletMultiButton className="flex-1" />
+              <Button
+                variant="outline"
+                className="flex-1 text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                onClick={disconnect}
+              >
+                Disconnect
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <WalletMultiButton className="w-full" />
+        )}
       </CardContent>
     </Card>
   );

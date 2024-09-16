@@ -30,7 +30,7 @@ export const BlinkDialog: React.FC<BlinkDialogProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-white dark:bg-gray-800">
+      <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-800">
         <DialogHeader>
           <DialogTitle className="text-purple-800 dark:text-purple-200">
             Generate Blink for {product?.title}

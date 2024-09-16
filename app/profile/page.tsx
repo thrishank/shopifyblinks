@@ -13,7 +13,7 @@ import { authOptions } from "@/lib/auth";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
-
+  
   return (
     <TooltipProvider>
       <div className="container mx-auto px-4 py-8">

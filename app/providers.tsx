@@ -11,6 +11,7 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import { ThemeProvider } from "@/components/themeProvider";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 
 require("@solana/wallet-adapter-react-ui/styles.css");
 
@@ -31,7 +32,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       >
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
-            {children}
+            <WalletModalProvider>{children}</WalletModalProvider>
           </WalletProvider>
         </ConnectionProvider>
       </ThemeProvider>

@@ -8,12 +8,11 @@ datasource db {
 }
 
 model Blink {
-  id           String   @id @default(uuid())
+  id           String   @id @default(nanoid())
   title        String
   description  String?
   image        String?
   price        String
-  email        String[]
   walletAddres String
   createdAt    DateTime @default(now())
 }

@@ -14,7 +14,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ProfileFormData, WalletInfo } from "@/lib/profile";
 import { validateEmail, validateUrl } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 
 export function ProfileForm({ session }: any) {
@@ -23,10 +23,15 @@ export function ProfileForm({ session }: any) {
     shopifyWebsiteUrl: "",
   });
 
-  if (session.user) {
-    formData.shopifyAccessToken = session.user.accessToken;
-    formData.shopifyWebsiteUrl = session.user.shopifyWebsiteUrl;
-  }
+  useEffect(() => {
+    if (session.user) {
+      setFormData((prev) => ({
+        ...prev,
+        shopifyAccessToken: session.user.accessToken,
+        shopifyWebsiteUrl: session.user.shopifyWebsiteUrl,
+      }));
+    }
+  }, [session.user]);
 
   const [errors, setErrors] = useState<Partial<ProfileFormData>>({});
   const [showToken, setShowToken] = useState(false);
