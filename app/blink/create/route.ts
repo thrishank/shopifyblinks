@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         walletAddres: wallet,
         accessToken: token!,
         website_url: url!,
-        varient_id: varient_id,
+        varient_id: varient_id.toString(),
       },
     });
 
