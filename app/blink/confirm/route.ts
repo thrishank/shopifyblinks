@@ -104,7 +104,7 @@ export const POST = async (req: Request) => {
         notify_customer: true,
         line_items: [
           {
-            variant_id: db_data?.varient_id,
+            variant_id: parseInt(db_data?.varient_id!),
             quantity: 1,
           },
         ],

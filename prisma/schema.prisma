@@ -16,6 +16,6 @@ model Blink {
   walletAddres String
   accessToken  String
   website_url  String
-  varient_id   Int
+  varient_id   String
   createdAt    DateTime @default(now())
 }
