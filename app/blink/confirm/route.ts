@@ -84,22 +84,17 @@ export const POST = async (req: Request) => {
       throw "Unable to confirm the provided signature";
     }
 
-    /**
-     * !TAKE CAUTION!
-     *
-     * since any client side request can access this public endpoint,
-     * a malicious actor could provide a valid signature that does NOT
-     * perform the previous action's transaction.
-     *
-     * todo: validate this transaction is what you expected the user to perform in the previous step
-     */
-
     const transaction = await connection.getParsedTransaction(
       signature,
       "confirmed"
     );
 
-    console.log("transaction: ", transaction);
+    /* 
+      perform this checks
+      the to address should be db_data.walletAddress 
+      and transaction amount should be equal to the db_data.price
+      and transffered token must be USDC  spl-token
+    */
 
     const orderData = {
       order: {
@@ -109,7 +104,7 @@ export const POST = async (req: Request) => {
         notify_customer: true,
         line_items: [
           {
-            variant_id: 45614942421220,
+            variant_id: db_data?.varient_id,
             quantity: 1,
           },
         ],
@@ -143,13 +138,15 @@ export const POST = async (req: Request) => {
     const shopifyWebsiteUrl = `${db_data?.website_url}/admin/api/2024-07/orders.json`;
     const token = decryptApiKey(db_data?.accessToken!);
 
-    axios.post(shopifyWebsiteUrl, JSON.stringify(orderData), {
+    const res = await axios.post(shopifyWebsiteUrl, JSON.stringify(orderData), {
       headers: {
         "X-Shopify-Access-Token": token,
         "Content-Type": "application/json",
       },
     });
-
+    if (res.statusText !== "Created") {
+      throw "Error creating order in shopify store please contact support if you have the done the payment";
+    }
     const payload: CompletedAction = {
       type: "completed",
       title: "Order Created Successfully",

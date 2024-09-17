@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/common/button";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const HeroSection: React.FC = () => {
   return (
@@ -17,17 +18,21 @@ const HeroSection: React.FC = () => {
             Instant, Secure, and Zero Middlemen Crypto Payments
           </p>
           <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
-            <Button className="w-auto" size="lg">
-              Get Started
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="bg-white dark:bg-gray-800 dark:text-white mx-4"
-            >
-              Learn More
-            </Button>
+            <Link href="/profile">
+              <Button className="w-auto" size="lg">
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href="#solana">
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-white dark:bg-gray-800 dark:text-white mx-4"
+              >
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="mt-10 w-full max-w-xl mx-auto">

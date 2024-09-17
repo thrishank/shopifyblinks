@@ -1,6 +1,9 @@
 # Todo
 
+- variant id need to pass to confirm blink
+- currency conversions
 - Transaction Verifcation also test with different values
+- on disconnection wallet should not redirect to products page
 - change the content of the home page
 - Record a demo video and write a medium blog
 - create a page for generated blinks. Store the blinks url in db after generation

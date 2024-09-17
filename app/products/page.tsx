@@ -30,17 +30,28 @@ export default function Page() {
       .then((data) => setProducts(data.products));
   }, []);
 
-  const handleGenerateBlink = async (product: Product) => {
+  // const session = useSession();
+  // const currency = session.data?.user.currency;
+
+  const handleGenerateBlink = async (
+    product: Product,
+    selectedVariantId: number
+  ) => {
     setSelectedProduct(product);
     setIsGenerating(true);
     setGeneratedLink("");
+
+    const selectedVariant = product.variants.find(
+      (variant) => variant.id === selectedVariantId
+    );
 
     const metadata = {
       title: product.title,
       description: htmlToText(product.body_html),
       image: product.image?.src,
-      price: product.variants[0].price,
+      price: selectedVariant?.price || product.variants[0].price,
       wallet: publicKey?.toBase58(),
+      varient_id: selectedVariantId,
     };
 
     const res = await axios.post(`/blink/create`, JSON.stringify(metadata));
@@ -83,7 +94,9 @@ export default function Page() {
               <ProductCard
                 key={product.id}
                 product={product}
-                onGenerateBlink={handleGenerateBlink}
+                onGenerateBlink={(product, selectedVariantId) =>
+                  handleGenerateBlink(product, selectedVariantId)
+                }
               />
             ))}
           </div>

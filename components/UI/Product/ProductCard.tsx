@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Product } from "@/lib/products";
+import { Product, ProductVariant } from "@/lib/products"; // Ensure the Variant type is defined properly
 import { Card, CardContent, CardFooter } from "@/components/common/card";
 import { Button } from "@/components/common/button";
 
 interface ProductCardProps {
   product: Product;
-  onGenerateBlink: (product: Product) => void;
+  onGenerateBlink: (product: Product, selectedVariantId: number) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onGenerateBlink,
 }) => {
+  // Ensure there is at least one variant before setting initial state
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>(
+    product.variants && product.variants.length > 0
+      ? product.variants[0]
+      : undefined
+  );
+
+  const handleVariantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedId = parseInt(event.target.value);
+    const variant = product.variants.find((v) => v.id === selectedId);
+    if (variant) {
+      setSelectedVariant(variant);
+    }
+  };
+
+  // Avoid rendering the card if there are no variants
+  if (!selectedVariant) {
+    return <div>No variants available</div>;
+  }
+
   return (
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:bg-gray-800">
       {product.image && (
@@ -33,12 +53,36 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           dangerouslySetInnerHTML={{ __html: product.body_html }}
         />
         <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-          ${product.variants[0]?.price || "0.00"}
+          ${selectedVariant.price || "0.00"}
         </p>
+
+        {/* Dropdown to select variant */}
+        {product.variants.length > 1 && (
+          <div className="my-4">
+            <label
+              htmlFor="variant-select"
+              className="block text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Select Variant:
+            </label>
+            <select
+              id="variant-select"
+              className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-200"
+              value={selectedVariant.id}
+              onChange={handleVariantChange}
+            >
+              {product.variants.map((variant) => (
+                <option key={variant.id} value={variant.id}>
+                  {variant.title} - ${variant.price}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </CardContent>
       <CardFooter className="bg-gray-50 dark:bg-gray-700 p-4">
         <Button
-          onClick={() => onGenerateBlink(product)}
+          onClick={() => onGenerateBlink(product, selectedVariant.id)}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-600"
         >
           Generate Blink

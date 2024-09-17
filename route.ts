@@ -1,9 +1,10 @@
+const axios = require("axios");
 const url = `https://solanablinks.myshopify.com/admin/api/2024-07/orders.json`;
 const token = "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";
 
 const orderData = {
   order: {
-    email: "thrishankkalluru@gmail.com",
+    email: "234234swerfd@student.nitandhra.ac.in",
     fulfillment_status: "fulfilled",
     send_receipt: true,
     // send_fulfillment_receipt: true,
@@ -53,14 +54,26 @@ const orderData = {
   },
 };
 
-fetch(url, {
-  method: "POST",
-  headers: {
-    "X-Shopify-Access-Token": token,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(orderData),
-})
-  .then((response) => response.json())
-  .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
+// fetch(url, {
+//   method: "POST",
+//   headers: {
+//     "X-Shopify-Access-Token": token,
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify(orderData),
+// })
+//   .then((response) => response.json())
+//   .then((data) => console.log(data))
+//   .catch((error) => console.error("Error:", error));
+
+async function get() {
+  const res = await axios.post(url, JSON.stringify(orderData), {
+    headers: {
+      "X-Shopify-Access-Token": token,
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(res);
+}
+
+get();

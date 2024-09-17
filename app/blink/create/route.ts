@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const url = session?.user.shopifyWebsiteUrl;
 
     const body = await req.json();
-    const { title, description, image, price, wallet } = body;
+    const { title, description, image, price, wallet, varient_id } = body;
 
     const blink = await prisma.blink.create({
       data: {
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
         walletAddres: wallet,
         accessToken: token!,
         website_url: url!,
+        varient_id: parseInt(varient_id),
       },
     });
 
