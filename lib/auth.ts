@@ -1,10 +1,12 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { checkShopifyAccess, verifyTokenAndGetShopInfo } from "./verify";
 
 interface User {
   id: string;
   accessToken: string;
   shopifyWebsiteUrl: string;
+  currency: string;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -29,35 +31,26 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Access token and Shopify website URL are required");
         }
 
-        // async function verifyTokenWithShopify(
-        //   token: string,
-        //   url: string
-        // ): Promise<boolean> {
-        //   try {
-        //     const response = await fetch(`${url}/admin/api/2023-04/shop.json`, {
-        //       headers: {
-        //         "X-Shopify-Access-Token": token,
-        //       },
-        //     });
-        //     return response.ok;
-        //   } catch (error) {
-        //     console.error("Error verifying token:", error);
-        //     return false;
-        //   }
-        // }
+        const hasRequiredAccess = await checkShopifyAccess(
+          shopifyWebsiteUrl,
+          accessToken
+        );
+        if (!hasRequiredAccess) {
+          throw new Error(
+            "The access token does not have the required scopes (read_products and write_orders)"
+          );
+        }
 
-        // const isValid = await verifyTokenWithShopify(
-        //   accessToken,
-        //   shopifyWebsiteUrl
-        // );
-        // if (!isValid) {
-        //   throw new Error("Invalid access token");
-        // }
+        const shopInfo = await verifyTokenAndGetShopInfo(
+          accessToken,
+          shopifyWebsiteUrl
+        );
 
         return {
-          id: "1", // You might want to generate a unique ID here
+          id: shopInfo.id,
           accessToken,
           shopifyWebsiteUrl,
+          currency: shopInfo.currency,
         };
       },
     }),
@@ -70,6 +63,7 @@ export const authOptions: NextAuthOptions = {
           id: token.id,
           accessToken: token.accessToken,
           shopifyWebsiteUrl: token.shopifyWebsiteUrl,
+          currency: token.currency,
         },
       };
     },
@@ -78,6 +72,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.accessToken = user.accessToken;
         token.shopifyWebsiteUrl = user.shopifyWebsiteUrl;
+        token.currency = user.currency;
       }
       return token;
     },

@@ -7,6 +7,7 @@ declare module "next-auth" {
       id: string;
       accessToken: string;
       shopifyWebsiteUrl: string;
+      currency: string;
     } & DefaultSession["user"];
   }
 
@@ -14,6 +15,7 @@ declare module "next-auth" {
     id: string;
     accessToken: string;
     shopifyWebsiteUrl: string;
+    currency: string;
   }
 }
 
@@ -22,5 +24,6 @@ declare module "next-auth/jwt" {
     id: string;
     accessToken: string;
     shopifyWebsiteUrl: string;
+    currency: string;
   }
 }

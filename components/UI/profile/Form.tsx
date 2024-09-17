@@ -15,6 +15,8 @@ import { ProfileFormData, WalletInfo } from "@/lib/profile";
 import { validateEmail, validateUrl } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 export default function ProfileForm() {
   const [formData, setFormData] = useState<ProfileFormData>({
@@ -32,7 +34,7 @@ export default function ProfileForm() {
         shopifyWebsiteUrl: session.user.shopifyWebsiteUrl,
       }));
     }
-  }, [status]);
+  }, [status, session?.user?.accessToken, session?.user?.shopifyWebsiteUrl]);
 
   const [errors, setErrors] = useState<Partial<ProfileFormData>>({});
   const [showToken, setShowToken] = useState(false);
@@ -58,6 +60,8 @@ export default function ProfileForm() {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
+  const { connected } = useWallet();
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (Object.values(errors).some((error) => error !== "")) {
@@ -72,12 +76,20 @@ export default function ProfileForm() {
         shopifyWebsiteUrl: formData.shopifyWebsiteUrl,
       });
       if (!res!.ok) {
-        toast.error("Invalid access token or Shopify website URL");
+        toast.error(res?.error || "error updating the data");
+        setIsSubmitting(false);
+        return;
+      }
+      if (!connected) {
+        toast.error("Please connect your wallet to receive payments");
         setIsSubmitting(false);
         return;
       }
       setIsSubmitting(false);
       toast.success("Profile updated successfully!");
+      setTimeout(() => {
+        router.push("/products");
+      }, 2000);
     } catch (e) {
       console.log(e);
       toast.error("error updating the data");
@@ -109,7 +121,7 @@ export default function ProfileForm() {
             value={formData.shopifyAccessToken}
             onChange={handleInputChange}
             className="pr-10"
-            placeholder="**************"
+            placeholder="shpat_**************"
           />
           <button
             type="button"
@@ -133,7 +145,7 @@ export default function ProfileForm() {
           type="url"
           value={formData.shopifyWebsiteUrl}
           onChange={handleInputChange}
-          placeholder="https://xyz.myshopify.com/"
+          placeholder="https://xyz.myshopify.com"
         />
         {errors.shopifyWebsiteUrl && (
           <p className="text-red-500 text-sm mt-1">
@@ -142,11 +154,15 @@ export default function ProfileForm() {
         )}
       </div>
 
-      <Label>Wallet Connection</Label>
-      <WalletConnect
-        onConnect={(info) => setWalletInfo(info)}
-        onDisconnect={() => setWalletInfo(null)}
-      />
+      <div>
+        <Label htmlFor="shopifyWebsiteUrl">
+          Connect your wallet to recieve payments
+        </Label>
+        <WalletConnect
+          onConnect={(info) => setWalletInfo(info)}
+          onDisconnect={() => setWalletInfo(null)}
+        />
+      </div>
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (

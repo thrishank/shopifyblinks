@@ -11,7 +11,7 @@ export const validateEmail = (email: string): boolean => {
 };
 
 export const validateUrl = (url: string): boolean => {
-  const re = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+  const re = /^https:\/\/[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+\/?$/;
   return re.test(url);
 };
 

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   const shop_url = session?.user.shopifyWebsiteUrl;
 
   let url = `${shop_url}/admin/api/2024-07/products.json?limit=250`;
-
+  console.log(url);
   try {
     const res = await axios.get(url, {
       method: "GET",

@@ -47,7 +47,7 @@ export default function Page() {
 
     setTimeout(() => {
       setIsGenerating(false);
-      setGeneratedLink(`https://solana.blinks.com/blink?id=${res.data}`);
+      setGeneratedLink(`https://solanablinks.me/blink?id=${res.data}`);
     }, 2000);
   };
 

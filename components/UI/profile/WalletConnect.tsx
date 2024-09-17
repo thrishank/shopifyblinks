@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/common/button";
 import {
   Card,
@@ -7,15 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/common/card";
-import { Loader2, Wallet } from "lucide-react";
 import { WalletInfo } from "@/lib/profile";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
   WalletMultiButton,
-  WalletModalProvider,
 } from "@solana/wallet-adapter-react-ui";
-
-// Import the wallet adapter styles
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 interface WalletConnectProps {
@@ -49,9 +45,9 @@ export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
   }, [connected, publicKey, onConnect, onDisconnect]);
 
   return (
-    <Card className="shadow-md">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-purple-700 dark:text-purple-300">
+    <Card className="shadow-md w-full max-w-md mx-auto">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-xl font-semibold text-purple-700 dark:text-purple-300">
           Wallet Connection
         </CardTitle>
       </CardHeader>
@@ -66,11 +62,11 @@ export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
                 {publicKey.toBase58()}
               </p>
             </div>
-            <div className="flex space-x-2">
-              <WalletMultiButton className="flex-1" />
+            <div className="flex flex-col sm:flex-row gap-2">
+              <WalletMultiButton className="w-full h-10" />
               <Button
                 variant="outline"
-                className="flex-1 text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+                className=" text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 w-full h-10"
                 onClick={disconnect}
               >
                 Disconnect
@@ -78,7 +74,7 @@ export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
             </div>
           </div>
         ) : (
-          <WalletMultiButton className="w-full" />
+          <WalletMultiButton className="w-full h-10" />
         )}
       </CardContent>
     </Card>
