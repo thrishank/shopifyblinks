@@ -6,8 +6,10 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -15,23 +17,23 @@ export default function Page() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLink, setGeneratedLink] = useState("");
 
-  const { publicKey, connected, connecting } = useWallet();
+  const { publicKey, connected } = useWallet();
+  const router = useRouter();
+
   useEffect(() => {
-    console.log("Wallet state:", {
-      publicKey: publicKey?.toBase58(),
-      connected,
-      connecting,
-    });
-  }, [publicKey, connected, connecting]);
+    if (!connected) {
+      toast.error("Please connect your wallet first to recive the payments");
+      setTimeout(() => {
+        router.push("/profile");
+      }, 2000);
+    }
+  }, [connected]);
 
   useEffect(() => {
     fetch(`/api/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data.products));
   }, []);
-
-  // const session = useSession();
-  // const currency = session.data?.user.currency;
 
   const handleGenerateBlink = async (
     product: Product,
@@ -64,15 +66,7 @@ export default function Page() {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(generatedLink);
-    toast.success("Link copied!", {
-      position: "bottom-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    toast.success("Link copied!");
   };
 
   useSession({
@@ -81,6 +75,15 @@ export default function Page() {
       redirect("/profile");
     },
   });
+
+  useEffect(() => {
+    toast.info(
+      "During the generation of the blink, the currency will be changed to USD if your default currency is not USD.",
+      {
+        autoClose: 5000,
+      }
+    );
+  }, []);
 
   return (
     <div className={`min-h-screen`}>
@@ -111,17 +114,7 @@ export default function Page() {
           onCopyLink={handleCopyLink}
         />
 
-        <ToastContainer
-          position="bottom-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+        <ToastContainer position="bottom-right" />
       </div>
     </div>
   );

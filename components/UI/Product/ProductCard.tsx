@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { Product, ProductVariant } from "@/lib/products"; // Ensure the Variant type is defined properly
+import { Product, ProductVariant } from "@/lib/products";
 import { Card, CardContent, CardFooter } from "@/components/common/card";
 import { Button } from "@/components/common/button";
 
@@ -28,7 +28,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     }
   };
 
-  // Avoid rendering the card if there are no variants
   if (!selectedVariant) {
     return <div>No variants available</div>;
   }
@@ -53,10 +52,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           dangerouslySetInnerHTML={{ __html: product.body_html }}
         />
         <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-          ${selectedVariant.price || "0.00"}
+          {selectedVariant.price || "0.00"}
         </p>
 
-        {/* Dropdown to select variant */}
         {product.variants.length > 1 && (
           <div className="my-4">
             <label

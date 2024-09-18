@@ -1,8 +1,7 @@
 # Todo
 
-- variant id need to pass to confirm blink
-- currency conversions
 - Transaction Verifcation also test with different values
+- profile page write proper errors 
 - on disconnection wallet should not redirect to products page
 - change the content of the home page
 - Record a demo video and write a medium blog
