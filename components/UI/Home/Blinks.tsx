@@ -23,7 +23,14 @@ export default function Blinks() {
           Blinks are Blockchain Links that allow users to perform
           blockchain-based transactions instantly and interactively through
           shareable URLs. These links can be embedded on platforms like X
-          (formerly Twitter) or any webpage.
+          (Twitter) or any webpage.To Read more about Blinks, click{" "}
+          <a
+            href="https://www.dialect.to/"
+            className="underline text-blue-500"
+            target="#blank"
+          >
+            here
+          </a>
         </p>
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((feature, index) => (

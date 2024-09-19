@@ -9,24 +9,23 @@ export default function Footer() {
           <div>
             <h3 className="text-xl font-semibold mb-4">SolanaBlinks</h3>
             <p className="text-purple-200 dark:text-purple-300">
-              Empowering Shopify merchants with blockchain technology
+              Empowering Shopify merchants with blockchain technology blink
             </p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               {[
-                "About Us",
-                "Contact",
-                "Privacy Policy",
-                "Terms of Service",
+                { name: "Contact", link: "mailto:thrishank.kalluru@gmail.com" },
+                { name: "Privacy Policy", link: "/privacy-policy" },
+                { name: "Terms of Service", link: "/terms-of-service" },
               ].map((item, index) => (
                 <li key={index}>
                   <a
-                    href="#"
+                    href={item.link}
                     className="hover:text-purple-300 transition-colors"
                   >
-                    {item}
+                    {item.name}
                   </a>
                 </li>
               ))}
@@ -35,13 +34,26 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-4">
-              {["Twitter", "LinkedIn", "Instagram"].map((item, index) => (
+              {[
+                {
+                  name: "Twitter",
+                  link: "https://twitter.com/blinkify",
+                },
+                {
+                  name: "Telegram",
+                  link: "https://t.me/thris3",
+                },
+                {
+                  name: "Discord",
+                  link: "https://discord.com/invite/thrishank",
+                },
+              ].map((item, index) => (
                 <a
                   key={index}
-                  href="#"
-                  className="hover:text-purple-300 transition-colors"
+                  href={item.link}
+                  className="hover:text-purple-300 transition-colors flex items-center space-x-2"
                 >
-                  {item}
+                  <span>{item.name}</span>
                 </a>
               ))}
             </div>

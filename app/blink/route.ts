@@ -183,13 +183,11 @@ export async function POST(req: Request) {
       fields: {
         transaction: tx,
         message:
-          "If your transaction is successful and if you haven't received the confirmation email, please contact us at",
+          "If your transaction is successful and if you haven't received the confirmation email, please contact the support",
         links: {
           next: {
             type: "post",
-            href: `/blink/confirm?&data=${JSON.stringify(
-              body.data
-            )}&id=${id}`,
+            href: `/blink/confirm?&data=${JSON.stringify(body.data)}&id=${id}`,
           },
         },
       },

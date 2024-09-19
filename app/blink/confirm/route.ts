@@ -6,10 +6,12 @@ import {
   ActionError,
   CompletedAction,
 } from "@solana/actions";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import axios from "axios";
+import { verifyTx } from "./verifyTx";
 
 const headers = createActionHeaders();
+const prisma = new PrismaClient();
 
 export const GET = async (req: Request) => {
   return Response.json({ message: "Method not supported" } as ActionError, {
@@ -30,7 +32,6 @@ interface dataType {
   city?: string;
   country?: string;
 }
-const prisma = new PrismaClient();
 export const POST = async (req: Request) => {
   try {
     const url = new URL(req.url);
@@ -59,42 +60,20 @@ export const POST = async (req: Request) => {
       throw 'Invalid "signature" provided';
     }
 
-    const connection = new Connection(clusterApiUrl("devnet"), {
-      commitment: "confirmed",
-    });
-
-    try {
-      let status = await connection.getSignatureStatus(signature);
-
-      console.log("signature status:", status);
-
-      if (!status) throw "Unknown signature status";
-
-      // only accept `confirmed` and `finalized` transactions
-      if (status.value?.confirmationStatus) {
-        if (
-          status.value.confirmationStatus != "confirmed" &&
-          status.value.confirmationStatus != "finalized"
-        ) {
-          throw "Unable to confirm the transaction";
-        }
-      }
-    } catch (err) {
-      if (typeof err == "string") throw err;
-      throw "Unable to confirm the provided signature";
-    }
-
-    const transaction = await connection.getParsedTransaction(
+    const { success, error } = await verifyTx(
       signature,
-      "confirmed"
+      account.toBase58(),
+      db_data?.walletAddres!,
+      db_data?.price!
     );
 
-    /* 
-      perform this checks
-      the to address should be db_data.walletAddress 
-      and transaction amount should be equal to the db_data.price
-      and transffered token must be USDC  spl-token
-    */
+    if (success === false) {
+      const ActionError: ActionError = {
+        message: error!,
+      };
+      return Response.json(ActionError, { status: 200, headers });
+      // throw error;
+    }
 
     const orderData = {
       order: {
@@ -160,6 +139,10 @@ export const POST = async (req: Request) => {
     });
   } catch (err) {
     console.log(err);
+    // const actionError: ActionError = {
+    //   message: err instanceof Error ? err.message : "An unknown error occurred",
+    // };
+    // return Response.json(actionError, { status: 400, headers });
     let actionError: ActionError = { message: "An unknown error occurred" };
     if (typeof err == "string") actionError.message = err;
     return Response.json(actionError, {

@@ -28,8 +28,7 @@ export async function POST(req: Request) {
       // if is to prevent the unnecessary api call
       const res = await axios.get(currency_url);
       const data = res.data.conversion_rates[currency!];
-      const update_price_float = price / data;
-      updated_price = update_price_float.toString();
+      updated_price = (price / data).toFixed(2);
     }
     console.log(updated_price);
 

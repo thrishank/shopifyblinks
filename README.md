@@ -1,13 +1,6 @@
-# Todo
+# Blinkify
 
-- Transaction Verifcation also test with different values
-- profile page write proper errors 
-- on disconnection wallet should not redirect to products page
-- change the content of the home page
-- Record a demo video and write a medium blog
-- create a page for generated blinks. Store the blinks url in db after generation
-- Build a intertisital site like dial.to
-- update the UI/UX
+Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
 
 # Testing credantials
 
@@ -16,14 +9,11 @@ access_token: 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
 shop: https://solanablinks.myshopify.com/
 ```
 
-# Blinkify
-
-Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
-
 ## Features
 
 - Shopify and wallet integration
 - Solana Blinks generation
+- Blinks Hosting (pending)
 
 ## Getting Started
 
@@ -110,3 +100,14 @@ The project follows a typical Next.js structure with some additional directories
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+# Todo
+
+- Transaction Verifcation also test with different values - paritally done testing pending
+- change the content of the home page - Product Demo Recording pending
+- on throwing the error in the verifycation of the transaction it is not showing in the blink. The blink is getting completed in the first action
+- profile page write proper errors
+- on disconnection wallet should not redirect to products page
+- Build a intertisital site like dial.to
+- Add a feature to share the blink directly to twitter using the twitter intents instead of copying the link
+- create a page for generated blinks. Store the blinks url in db after generation

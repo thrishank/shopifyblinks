@@ -60,7 +60,7 @@ export default function Solana() {
           </div>
         </div>
         <p className="mt-8 text-center text-lg font-medium text-purple-600 dark:text-purple-300">
-          Using Solana Blinks means more profits, faster payments, and fewer
+          Using Solana Blinks means more profits, faster payments, and 0
           fees!
         </p>
       </div>
