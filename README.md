@@ -104,10 +104,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 # Todo
 
 - Transaction Verifcation also test with different values - paritally done testing pending
-- change the content of the home page - Product Demo Recording pending
 - on throwing the error in the verifycation of the transaction it is not showing in the blink. The blink is getting completed in the first action
 - We complete the action and in the final payload we can set the error message and show it in the blink ? Only problem it is green color
 
 - Build a intertisital site like dial.to
-
+- change the content of the home page - Product Demo Recording pending
 - create a page for generated blinks. Store the blinks url in db after generation

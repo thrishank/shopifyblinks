@@ -128,8 +128,11 @@ export async function POST(req: Request) {
     const id = url.searchParams.get("id")!;
 
     const body: ActionPostRequest = await req.json();
-    console.log(body.data);
-    const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+
+    const connection = new Connection(
+      clusterApiUrl("mainnet-beta"),
+      "confirmed"
+    );
 
     let account: PublicKey;
     try {
@@ -144,8 +147,8 @@ export async function POST(req: Request) {
       await connection.getLatestBlockhash();
 
     const mint_address = new PublicKey(
-      // "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-      "9jyEAn15hMY7f5iKdUTPE5ZGaxD4BfsbHggwHFYvgF61"
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      // "9jyEAn15hMY7f5iKdUTPE5ZGaxD4BfsbHggwHFYvgF61"
     );
 
     try {

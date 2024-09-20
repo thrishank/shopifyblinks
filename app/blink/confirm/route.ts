@@ -68,11 +68,17 @@ export const POST = async (req: Request) => {
     );
 
     if (success === false) {
-      const ActionError: ActionError = {
-        message: error!,
+      const payload: CompletedAction = {
+        icon: "",
+        title: "Payment Failed",
+        description: error!,
+        label: "Failed",
+        type: "completed",
       };
-      return Response.json(ActionError, { status: 200, headers });
-      // throw error;
+
+      return Response.json(payload, {
+        headers,
+      });
     }
 
     const orderData = {

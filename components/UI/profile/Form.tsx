@@ -8,7 +8,14 @@ import {
   TooltipTrigger,
 } from "@/components/common/tooltip";
 import { WalletConnect } from "./WalletConnect";
-import { ChevronDown, ChevronUp, Eye, EyeOff, HelpCircle, Loader2 } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Eye,
+  EyeOff,
+  HelpCircle,
+  Loader2,
+} from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ProfileFormData, WalletInfo } from "@/lib/profile";
@@ -82,7 +89,7 @@ export default function ProfileForm() {
         setIsSubmitting(false);
         return;
       }
-      
+
       if (!connected) {
         toast.error("Please connect your wallet to receive payments");
         setIsSubmitting(false);
@@ -160,12 +167,15 @@ export default function ProfileForm() {
               <li>
                 Go to Settings &gt; Apps and sales channel &gt; Develop apps
               </li>
-              <li>Click on "Allow custom app development"</li>
+              <li>Click on Allow custom app development</li>
               <li>Configure Admin API Scopes</li>
-              <li>Select the "read_products" and "write_orders" permissions</li>
+              <li>
+                Select the <span className="font-bold">read_products</span> and
+                <span className="font-bold">write_orders</span> permissions
+              </li>
               <li>Click the save button at the bottom</li>
               <li>Scroll back to the top of the webpage and install the app</li>
-              <li>Copy the access token (starts with "shpat")</li>
+              <li>Copy the access token starts with shpat</li>
               <li>Paste this token in the input field above</li>
             </ol>
           </div>

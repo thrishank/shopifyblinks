@@ -12,9 +12,12 @@ export async function verifyTx(
   to_addr: string,
   price: string
 ): Promise<{ success: boolean; error?: string }> {
-  const connection = new Connection(clusterApiUrl("devnet"), {
+  const connection = new Connection(clusterApiUrl("mainnet-beta"), {
     commitment: "confirmed",
   });
+
+  // wait 3 seconds to make sure the transaction is confirmed
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   try {
     const tx = await connection.getParsedTransaction(signature, {
@@ -85,15 +88,15 @@ export async function verifyTx(
       return { success: false, error: "Invalid destination wallet address" };
     }
 
-    // const { info } = tokenTransferInstruction.parsed;
-    // const amount = info.tokenAmount.uiAmountString;
-    // if (amount !== price) {
-    //   return { success: false, error: "Invalid transaction amount" };
-    // }
+    const { info } = tokenTransferInstruction.parsed;
+    const amount = info.tokenAmount.uiAmountString;
+    if (amount !== price) {
+      return { success: false, error: "Invalid transaction amount" };
+    }
 
     const usdcMint = new PublicKey(
-      //   "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
-      "9jyEAn15hMY7f5iKdUTPE5ZGaxD4BfsbHggwHFYvgF61"
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      // "9jyEAn15hMY7f5iKdUTPE5ZGaxD4BfsbHggwHFYvgF61"
     );
     const isUSDCTransfer = tx.meta?.preTokenBalances?.some(
       (balance) => balance.mint === usdcMint.toBase58()
