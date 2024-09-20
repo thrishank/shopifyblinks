@@ -14,7 +14,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onGenerateBlink,
 }) => {
   // Ensure there is at least one variant before setting initial state
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>(
+  const [selectedVariant, setSelectedVariant] = useState<
+    ProductVariant | undefined
+  >(
     product.variants && product.variants.length > 0
       ? product.variants[0]
       : undefined
@@ -33,7 +35,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   return (
-    <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:bg-gray-800">
+    <Card className="flex flex-col h-full overflow-hidden transition-shadow duration-300 hover:shadow-lg dark:bg-gray-800">
       {product.image && (
         <Image
           src={product.image.src}
@@ -43,7 +45,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           className="w-full h-48 object-cover"
         />
       )}
-      <CardContent className="p-4">
+      <CardContent className="p-4 flex-grow">
         <h2 className="text-xl font-semibold mb-2 text-purple-800 dark:text-purple-200">
           {product.title}
         </h2>
@@ -78,7 +80,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
       </CardContent>
-      <CardFooter className="bg-gray-50 dark:bg-gray-700 p-4">
+      <CardFooter className="bg-gray-50 dark:bg-gray-700 p-4 mt-auto">
         <Button
           onClick={() => onGenerateBlink(product, selectedVariant.id)}
           className="w-full bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-600"

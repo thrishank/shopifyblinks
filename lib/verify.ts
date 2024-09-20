@@ -25,13 +25,13 @@ export async function checkShopifyAccess(
         "Content-Type": "application/json",
       },
     });
-
     const accessScopes = response.data.access_scopes.map(
       (scope) => scope.handle
     );
     const missingScopes = requiredScopes.filter(
       (scope) => !accessScopes.includes(scope)
     );
+
 
     return {
       hasRequiredAccess: missingScopes.length === 0,
@@ -43,16 +43,20 @@ export async function checkShopifyAccess(
         "Error checking Shopify access:",
         error.response?.data || error.message
       );
+      throw new Error(
+        "Error checking Shopify access:",
+        error.response?.data || error.message
+      );
     } else {
       console.error("Error checking Shopify access:", error);
     }
-    throw new Error("Failed to check Shopify access");
+    throw new Error("Failed to check Shopify access error: ");
   }
 }
 
 interface ShopifyShop {
   currency: string;
-  id: string
+  id: string;
 }
 
 export async function verifyTokenAndGetShopInfo(

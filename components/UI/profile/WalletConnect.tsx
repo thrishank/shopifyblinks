@@ -9,9 +9,7 @@ import {
 } from "@/components/common/card";
 import { WalletInfo } from "@/lib/profile";
 import { useWallet } from "@solana/wallet-adapter-react";
-import {
-  WalletMultiButton,
-} from "@solana/wallet-adapter-react-ui";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 interface WalletConnectProps {
@@ -51,7 +49,7 @@ export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
           Wallet Connection
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-4">
+      <CardContent className="px-6">
         {connected && publicKey ? (
           <div className="space-y-4">
             <div>
@@ -64,13 +62,6 @@ export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
             </div>
             <div className="flex flex-col sm:flex-row gap-2">
               <WalletMultiButton className="w-full h-10" />
-              <Button
-                variant="outline"
-                className=" text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 w-full h-10"
-                onClick={disconnect}
-              >
-                Disconnect
-              </Button>
             </div>
           </div>
         ) : (

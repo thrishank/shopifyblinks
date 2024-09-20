@@ -31,27 +31,34 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Access token and Shopify website URL are required");
         }
 
-        const hasRequiredAccess = await checkShopifyAccess(
-          shopifyWebsiteUrl,
-          accessToken
-        );
-        if (!hasRequiredAccess) {
+        try {
+          const { hasRequiredAccess, missingScopes } = await checkShopifyAccess(
+            shopifyWebsiteUrl,
+            accessToken
+          );
+
+          if (!hasRequiredAccess) {
+            throw new Error(
+              `The access token does not have these required scopes: ${missingScopes.join(",")}`
+            );
+          }
+
+          const shopInfo = await verifyTokenAndGetShopInfo(
+            accessToken,
+            shopifyWebsiteUrl
+          );
+
+          return {
+            id: shopInfo.id,
+            accessToken,
+            shopifyWebsiteUrl,
+            currency: shopInfo.currency,
+          };
+        } catch (err) {
           throw new Error(
-            "The access token does not have the required scopes (read_products and write_orders)"
+            err instanceof Error ? err.message : "An unexpected error occurred"
           );
         }
-
-        const shopInfo = await verifyTokenAndGetShopInfo(
-          accessToken,
-          shopifyWebsiteUrl
-        );
-
-        return {
-          id: shopInfo.id,
-          accessToken,
-          shopifyWebsiteUrl,
-          currency: shopInfo.currency,
-        };
       },
     }),
   ],

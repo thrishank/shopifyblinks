@@ -10,6 +10,7 @@ import { Button } from "@/components/common/button";
 import { Input } from "@/components/common/input";
 import { Copy, Loader2 } from "lucide-react";
 import { Product } from "@/lib/products";
+import { TwitterLogoIcon } from "@radix-ui/react-icons";
 
 interface BlinkDialogProps {
   product: Product | null;
@@ -28,6 +29,13 @@ export const BlinkDialog: React.FC<BlinkDialogProps> = ({
   generatedLink,
   onCopyLink,
 }) => {
+  const shareOnTwitter = () => {
+    const tweetText = encodeURIComponent(
+      `Buy this product in a blink ${product?.title}\n\n${generatedLink}`
+    );
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(twitterUrl, "_blank");
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-800">
@@ -59,6 +67,12 @@ export const BlinkDialog: React.FC<BlinkDialogProps> = ({
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white dark:bg-purple-500 dark:hover:bg-purple-600"
               >
                 <Copy className="mr-2 h-4 w-4" /> Copy Link
+              </Button>
+              <Button
+                onClick={shareOnTwitter}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              >
+                <TwitterLogoIcon className="mr-2 h-4 w-4" /> Share on Twitter
               </Button>
             </div>
           ) : null}

@@ -106,8 +106,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 - Transaction Verifcation also test with different values - paritally done testing pending
 - change the content of the home page - Product Demo Recording pending
 - on throwing the error in the verifycation of the transaction it is not showing in the blink. The blink is getting completed in the first action
-- profile page write proper errors
-- on disconnection wallet should not redirect to products page
+- We complete the action and in the final payload we can set the error message and show it in the blink ? Only problem it is green color
+
 - Build a intertisital site like dial.to
-- Add a feature to share the blink directly to twitter using the twitter intents instead of copying the link
+
 - create a page for generated blinks. Store the blinks url in db after generation

@@ -9,7 +9,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { href: "/profile", label: "Profile" },
   { href: "/products", label: "Products" },
-  { href: "/blinks", label: "Blinks" },
+  { href: "/generated_blinks", label: "Blinks" },
 ];
 
 export default function NavBar() {

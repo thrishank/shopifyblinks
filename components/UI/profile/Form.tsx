@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/common/tooltip";
 import { WalletConnect } from "./WalletConnect";
-import { Eye, EyeOff, HelpCircle, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Eye, EyeOff, HelpCircle, Loader2 } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ProfileFormData, WalletInfo } from "@/lib/profile";
@@ -40,6 +40,7 @@ export default function ProfileForm() {
   const [showToken, setShowToken] = useState(false);
   const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,11 +76,13 @@ export default function ProfileForm() {
         accessToken: formData.shopifyAccessToken,
         shopifyWebsiteUrl: formData.shopifyWebsiteUrl,
       });
+
       if (!res!.ok) {
         toast.error(res?.error || "error updating the data");
         setIsSubmitting(false);
         return;
       }
+      
       if (!connected) {
         toast.error("Please connect your wallet to receive payments");
         setIsSubmitting(false);
@@ -135,6 +138,38 @@ export default function ProfileForm() {
             )}
           </button>
         </div>
+      </div>
+
+      <div>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full flex justify-between items-center"
+          onClick={() => setShowInstructions(!showInstructions)}
+        >
+          How to get your Shopify access token
+          {showInstructions ? (
+            <ChevronUp className="h-4 w-4" />
+          ) : (
+            <ChevronDown className="h-4 w-4" />
+          )}
+        </Button>
+        {showInstructions && (
+          <div className="mt-2 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+            <ol className="list-decimal list-inside space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li>
+                Go to Settings &gt; Apps and sales channel &gt; Develop apps
+              </li>
+              <li>Click on "Allow custom app development"</li>
+              <li>Configure Admin API Scopes</li>
+              <li>Select the "read_products" and "write_orders" permissions</li>
+              <li>Click the save button at the bottom</li>
+              <li>Scroll back to the top of the webpage and install the app</li>
+              <li>Copy the access token (starts with "shpat")</li>
+              <li>Paste this token in the input field above</li>
+            </ol>
+          </div>
+        )}
       </div>
 
       <div>
