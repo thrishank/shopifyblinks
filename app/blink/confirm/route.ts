@@ -71,7 +71,9 @@ export const POST = async (req: Request) => {
       const payload: CompletedAction = {
         icon: new URL("/error.png", url.origin).toString(),
         title: "Payment Failed",
-        description: error!,
+        description:
+          error! +
+          "If you have done a valid transaction please contact support",
         label: "Failed",
         type: "completed",
       };
@@ -121,8 +123,8 @@ export const POST = async (req: Request) => {
     };
 
     const shopifyWebsiteUrl = `${db_data?.website_url}/admin/api/2024-07/orders.json`;
-    const token = decryptApiKey(db_data?.accessToken!);
-
+    // const token = decryptApiKey(db_data?.accessToken!);
+    const token = db_data?.accessToken!;
     const res = await axios.post(shopifyWebsiteUrl, JSON.stringify(orderData), {
       headers: {
         "X-Shopify-Access-Token": token,

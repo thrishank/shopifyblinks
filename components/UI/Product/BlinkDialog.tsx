@@ -31,7 +31,7 @@ export const BlinkDialog: React.FC<BlinkDialogProps> = ({
 }) => {
   const shareOnTwitter = () => {
     const tweetText = encodeURIComponent(
-      `Buy this product in a blink ${product?.title}\n\n${generatedLink}`
+      `Buy this product ${product?.title} in a blink \n\n${generatedLink}`
     );
     const twitterUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
     window.open(twitterUrl, "_blank");

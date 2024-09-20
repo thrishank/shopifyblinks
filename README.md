@@ -1,3 +1,8 @@
+# Todo
+
+- Host the blinks in out website. The blink url's become much more user friendly
+- Bug: Variants of the products price is not getting converted to USDC
+
 # Blinkify
 
 Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
@@ -100,8 +105,3 @@ The project follows a typical Next.js structure with some additional directories
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-# Todo
-
-- Transaction Verifcation also test with different values - paritally done testing pending
-- Build a intertisital to host blinks like dial.to

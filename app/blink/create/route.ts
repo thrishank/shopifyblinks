@@ -12,7 +12,9 @@ export async function POST(req: Request) {
     const session = await getServerSession(authOptions);
     console.log(session);
 
-    const token = encryptApiKey(session?.user.accessToken!);
+    // const token = encryptApiKey(session?.user.accessToken!);
+    const token = session?.user.accessToken!;
+
     const url = session?.user.shopifyWebsiteUrl;
 
     const body = await req.json();

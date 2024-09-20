@@ -89,7 +89,7 @@ export async function verifyTx(
     }
 
     const { info } = tokenTransferInstruction.parsed;
-    const amount = info.tokenAmount.uiAmountString;
+    const amount = (info.amount / 1_000_000).toFixed(2);
     if (amount !== price) {
       return { success: false, error: "Invalid transaction amount" };
     }

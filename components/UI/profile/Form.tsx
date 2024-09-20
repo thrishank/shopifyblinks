@@ -174,7 +174,7 @@ export default function ProfileForm() {
               </li>
               <li>Configure Admin API Scopes</li>
               <li>
-                Select the <span className="font-bold">read_products</span> and
+                Select the <span className="font-bold">read_products</span> and{" "}
                 <span className="font-bold">write_orders</span> permissions
               </li>
               <li>Click the save button at the bottom</li>

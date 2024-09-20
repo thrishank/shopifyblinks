@@ -69,9 +69,14 @@ export default function Page() {
       }, 2000);
     } else {
       const res = await axios.post(`/blink/create`, JSON.stringify(metadata));
+      const url = `https://solanablinks.me/blink?id=${res.data}`;
       setTimeout(() => {
         setIsGenerating(false);
-        setGeneratedLink(`https://solanablinks.me/blink?id=${res.data}`);
+        setGeneratedLink(
+          `https://dial.to/?action=solana-action:${encodeURIComponent(
+            url
+          )}&cluster=mainnet`
+        );
       }, 2000);
     }
   };
