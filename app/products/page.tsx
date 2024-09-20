@@ -1,7 +1,6 @@
 "use client";
 import { BlinkDialog } from "@/components/UI/Product/BlinkDialog";
 import { ProductCard } from "@/components/UI/Product/ProductCard";
-import { authOptions } from "@/lib/auth";
 import { Product } from "@/lib/products";
 import { useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
@@ -37,15 +36,6 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if (!connected) {
-      toast.error("Please connect your wallet first to recive the payments");
-      setTimeout(() => {
-        router.push("/profile");
-      }, 2000);
-    }
-  }, [connected]);
-
-  useEffect(() => {
     fetch(`/api/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data.products));
@@ -72,12 +62,18 @@ export default function Page() {
       varient_id: selectedVariantId,
     };
 
-    const res = await axios.post(`/blink/create`, JSON.stringify(metadata));
-
-    setTimeout(() => {
-      setIsGenerating(false);
-      setGeneratedLink(`https://solanablinks.me/blink?id=${res.data}`);
-    }, 2000);
+    if (!connected) {
+      toast.error("Please connect your wallet first to recive the payments");
+      setTimeout(() => {
+        router.push("/profile");
+      }, 2000);
+    } else {
+      const res = await axios.post(`/blink/create`, JSON.stringify(metadata));
+      setTimeout(() => {
+        setIsGenerating(false);
+        setGeneratedLink(`https://solanablinks.me/blink?id=${res.data}`);
+      }, 2000);
+    }
   };
 
   const handleCopyLink = () => {
