@@ -1,6 +1,6 @@
 # Todo
 
-- Host the blinks in out website. The blink url's become much more user friendly
+- Host the blinks in our website. The blink url's become much more user friendly
 - Bug: Variants of the products price is not getting converted to USDC
 
 # Blinkify

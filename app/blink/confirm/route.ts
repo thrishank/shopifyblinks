@@ -97,7 +97,8 @@ export const POST = async (req: Request) => {
         ],
         shipping_address: {
           first_name: data.name,
-          address1: data.country,
+          last_name: data.name,
+          address1: data.address,
           phone: data.phone,
           city: data.city,
           province: data.state,
