@@ -18,8 +18,8 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { title, description, image, price, wallet, varient_id } = body;
 
-    const cuurency_api_key = process.env.CURRENCY_API_KEY;
-    const currency_url = `https://v6.exchangerate-api.com/v6/${cuurency_api_key}/latest/USD`;
+    const curency_api_key = process.env.CURRENCY_API_KEY;
+    const currency_url = `https://v6.exchangerate-api.com/v6/${curency_api_key}/latest/USD`;
 
     const currency = session?.user.currency;
 
@@ -30,7 +30,6 @@ export async function POST(req: Request) {
       const data = res.data.conversion_rates[currency!];
       updated_price = (price / data).toFixed(2);
     }
-    console.log(updated_price);
 
     const blink = await prisma.blink.create({
       data: {

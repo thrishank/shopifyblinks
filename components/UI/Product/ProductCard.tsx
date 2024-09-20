@@ -7,11 +7,13 @@ import { Button } from "@/components/common/button";
 interface ProductCardProps {
   product: Product;
   onGenerateBlink: (product: Product, selectedVariantId: number) => void;
+  currency_rate: string;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   product,
   onGenerateBlink,
+  currency_rate,
 }) => {
   // Ensure there is at least one variant before setting initial state
   const [selectedVariant, setSelectedVariant] = useState<
@@ -54,7 +56,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           dangerouslySetInnerHTML={{ __html: product.body_html }}
         />
         <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-          {selectedVariant.price || "0.00"}
+          {(
+            parseFloat(selectedVariant.price) / parseFloat(currency_rate)
+          ).toFixed(2) || "0.00"}{" "}
+          USDC
         </p>
 
         {product.variants.length > 1 && (

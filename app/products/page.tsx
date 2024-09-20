@@ -1,6 +1,7 @@
 "use client";
 import { BlinkDialog } from "@/components/UI/Product/BlinkDialog";
 import { ProductCard } from "@/components/UI/Product/ProductCard";
+import { authOptions } from "@/lib/auth";
 import { Product } from "@/lib/products";
 import { useWallet } from "@solana/wallet-adapter-react";
 import axios from "axios";
@@ -16,9 +17,24 @@ export default function Page() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLink, setGeneratedLink] = useState("");
+  const [currency_rate, setCurrencyRate] = useState("1");
 
   const { publicKey, connected } = useWallet();
   const router = useRouter();
+
+  const session = useSession();
+  const currency_url = `https://v6.exchangerate-api.com/v6/35e3fc6e6f0224062d2bf0b2/latest/USD`;
+
+  useEffect(() => {
+    const currency = session.data?.user.currency;
+    if (currency !== "USD") {
+      fetch(currency_url).then((res) => {
+        res.json().then((data) => {
+          setCurrencyRate(data.conversion_rates[currency!]);
+        });
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (!connected) {
@@ -76,15 +92,6 @@ export default function Page() {
     },
   });
 
-  useEffect(() => {
-    toast.info(
-      "During the generation of the blink, the currency will be changed to USD if your default currency is not USD.",
-      {
-        autoClose: 5000,
-      }
-    );
-  }, []);
-
   return (
     <div className={`min-h-screen`}>
       <div className="bg-purple-50 dark:bg-gray-900 transition-colors duration-300">
@@ -100,6 +107,7 @@ export default function Page() {
                 onGenerateBlink={(product, selectedVariantId) =>
                   handleGenerateBlink(product, selectedVariantId)
                 }
+                currency_rate={currency_rate}
               />
             ))}
           </div>
