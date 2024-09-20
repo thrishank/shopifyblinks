@@ -167,7 +167,11 @@ export default function ProfileForm() {
               <li>
                 Go to Settings &gt; Apps and sales channel &gt; Develop apps
               </li>
-              <li>Click on Allow custom app development</li>
+              <li>
+                Click on Allow custom app development if this is your first time
+                creating an app. If you have already created an app, click on
+                create an app
+              </li>
               <li>Configure Admin API Scopes</li>
               <li>
                 Select the <span className="font-bold">read_products</span> and

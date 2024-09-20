@@ -18,11 +18,10 @@ interface WalletConnectProps {
 }
 
 export function WalletConnect({ onConnect, onDisconnect }: WalletConnectProps) {
-  const { publicKey, connected, disconnect, autoConnect } = useWallet();
+  const { publicKey, connected } = useWallet();
   const prevConnectedRef = useRef(connected);
   const prevPublicKeyRef = useRef(publicKey);
 
-  console.log(publicKey, connected, autoConnect);
   useEffect(() => {
     if (
       connected !== prevConnectedRef.current ||
