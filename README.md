@@ -16,9 +16,7 @@ shop: https://solanablinks.myshopify.com/
 
 # Demo Video
 
-<video width="640" height="360" controls>
-  <source src="https://www.youtube.com/watch?v=yzXBa84oRiI&ab_channel=Thrishank" type="video/mp4">
-</video>
+[![Demo Video](https://img.youtube.com/vi/yzXBa84oRiI/0.jpg)](https://www.youtube.com/watch?v=yzXBa84oRiI&ab_channel=Thrishank)
 
 ## Features
 
