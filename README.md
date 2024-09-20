@@ -14,6 +14,12 @@ access_token: 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
 shop: https://solanablinks.myshopify.com/
 ```
 
+# Demo Video
+
+<video width="640" height="360" controls>
+  <source src="public/blinks_demo.mp4" type="video/mp4">
+</video>
+
 ## Features
 
 - Shopify and wallet integration
