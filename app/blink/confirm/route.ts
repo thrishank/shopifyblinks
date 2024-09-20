@@ -69,7 +69,7 @@ export const POST = async (req: Request) => {
 
     if (success === false) {
       const payload: CompletedAction = {
-        icon: "",
+        icon: new URL("/error.png", url.origin).toString(),
         title: "Payment Failed",
         description: error!,
         label: "Failed",
