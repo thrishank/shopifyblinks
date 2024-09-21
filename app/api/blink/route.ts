@@ -46,7 +46,7 @@ export async function GET(req: Request) {
           {
             label: `Buy Now ${data.price}`,
             href: new URL(
-              `api/blink?to=${data.walletAddres}&price=${data.price}&id=${id}`,
+              `/api/blink?to=${data.walletAddres}&price=${data.price}&id=${id}`,
               req.url
             ).toString(),
             parameters: [
@@ -180,7 +180,7 @@ export async function POST(req: Request) {
         links: {
           next: {
             type: "post",
-            href: `api/blink/confirm?&data=${JSON.stringify(
+            href: `/api/blink/confirm?&data=${JSON.stringify(
               body.data
             )}&id=${id}`,
           },
