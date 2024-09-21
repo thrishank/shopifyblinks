@@ -3,6 +3,7 @@ import Footer from "@/components/Fotter";
 import { Metadata } from "next";
 import NavBar from "@/components/UI/Home/Nav";
 import { Providers } from "./providers";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Shopify Solana Blinks",
@@ -14,13 +15,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const url = headers().get("blink-url");
+  const showNavbarAndFooter = url?.includes("blink");
+
   return (
     <html lang="en">
       <body>
         <Providers>
-          <NavBar />
+          {!showNavbarAndFooter && <NavBar />}
           {children}
-          <Footer />
+          {!showNavbarAndFooter && <Footer />}
         </Providers>
       </body>
     </html>

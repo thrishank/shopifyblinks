@@ -46,7 +46,7 @@ export async function GET(req: Request) {
           {
             label: `Buy Now ${data.price}`,
             href: new URL(
-              `/blink?to=${data.walletAddres}&price=${data.price}&id=${id}`,
+              `api/blink?to=${data.walletAddres}&price=${data.price}&id=${id}`,
               req.url
             ).toString(),
             parameters: [
@@ -56,16 +56,6 @@ export async function GET(req: Request) {
                 label: "Enter your email",
                 required: true,
               },
-              // {
-              //   type: "checkbox",
-              //   name: "subscription",
-              //   options: [
-              //     {
-              //       label: "Email me with news and offers",
-              //       value: "yes",
-              //     },
-              //   ],
-              // },
               {
                 name: "phone",
                 type: "number",
@@ -190,7 +180,9 @@ export async function POST(req: Request) {
         links: {
           next: {
             type: "post",
-            href: `/blink/confirm?&data=${JSON.stringify(body.data)}&id=${id}`,
+            href: `api/blink/confirm?&data=${JSON.stringify(
+              body.data
+            )}&id=${id}`,
           },
         },
       },

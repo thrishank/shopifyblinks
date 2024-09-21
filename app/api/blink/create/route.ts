@@ -10,8 +10,7 @@ const prisma = new PrismaClient();
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    console.log(session);
-
+    
     // const token = encryptApiKey(session?.user.accessToken!);
     const token = session?.user.accessToken!;
 

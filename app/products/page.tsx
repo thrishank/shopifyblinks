@@ -68,15 +68,16 @@ export default function Page() {
         router.push("/profile");
       }, 2000);
     } else {
-      const res = await axios.post(`/blink/create`, JSON.stringify(metadata));
+      const res = await axios.post(
+        `api/blink/create`,
+        JSON.stringify(metadata)
+      );
+
       const url = `https://solanablinks.me/blink?id=${res.data}`;
+
       setTimeout(() => {
         setIsGenerating(false);
-        setGeneratedLink(
-          `https://dial.to/?action=solana-action:${encodeURIComponent(
-            url
-          )}&cluster=mainnet`
-        );
+        setGeneratedLink(url);
       }, 2000);
     }
   };

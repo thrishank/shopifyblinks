@@ -1,8 +1,3 @@
-# Todo
-
-- Host the blinks in our website. The blink url's become much more user friendly
-- Bug: Variants of the products price is not getting converted to USDC
-
 # Blinkify
 
 Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
@@ -22,7 +17,7 @@ shop: https://solanablinks.myshopify.com/
 
 - Shopify and wallet integration
 - Solana Blinks generation
-- Blinks Hosting (pending)
+- Blinks Hosting
 
 ## Getting Started
 
@@ -109,3 +104,7 @@ The project follows a typical Next.js structure with some additional directories
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+# Todo
+
+- Bug: Variants of the products price is not getting converted to USDC
