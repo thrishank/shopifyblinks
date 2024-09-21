@@ -86,7 +86,8 @@ export const POST = async (req: Request) => {
     const orderData = {
       order: {
         email: data.email,
-        fulfillment_status: "fulfilled",
+        fulfillment_status: "unfulfilled",
+        financial_status: "paid",
         send_receipt: true,
         notify_customer: true,
         line_items: [

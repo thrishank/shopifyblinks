@@ -56,16 +56,6 @@ export async function GET(req: Request) {
                 label: "Enter your email",
                 required: true,
               },
-              // {
-              //   type: "checkbox",
-              //   name: "subscription",
-              //   options: [
-              //     {
-              //       label: "Email me with news and offers",
-              //       value: "yes",
-              //     },
-              //   ],
-              // },
               {
                 name: "phone",
                 type: "number",
@@ -87,21 +77,25 @@ export async function GET(req: Request) {
                 name: "state",
                 label: "Enter your state",
                 type: "text",
+                required: true,
               },
               {
                 name: "zip",
                 label: "PIN CODE",
                 type: "text",
+                required: true,
               },
               {
                 name: "city",
                 label: "city",
                 type: "text",
+                required: true,
               },
               {
                 name: "country",
                 label: "country/Region",
                 type: "text",
+                required: true,
               },
             ],
           },
