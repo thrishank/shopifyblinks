@@ -109,3 +109,4 @@ The project follows a typical Next.js structure with some additional directories
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
