@@ -44,7 +44,7 @@ export async function GET(req: Request) {
       links: {
         actions: [
           {
-            label: `Buy Now ${data.price}`,
+            label: `Buy Now for ${data.price} USDC`,
             href: new URL(
               `/blink?to=${data.walletAddres}&price=${data.price}&id=${id}`,
               req.url

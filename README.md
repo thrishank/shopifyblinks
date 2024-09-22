@@ -2,6 +2,7 @@
 
 - Host the blinks in our website. The blink url's become much more user friendly
 - Bug: Variants of the products price is not getting converted to USDC
+- Curreny changing page fix the NAN error
 
 # Blinkify
 
@@ -109,4 +110,3 @@ The project follows a typical Next.js structure with some additional directories
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
