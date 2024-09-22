@@ -120,6 +120,10 @@ export const POST = async (req: Request) => {
             name: "payer wallet address",
             value: account.toBase58(),
           },
+          {
+            name: "shipping address",
+            value: `name: ${data.name}, address: ${data.address}, city: ${data.city}, state: ${data.state}, country: ${data.country}, zip: ${data.zip}`,
+          },
         ],
       },
     };
