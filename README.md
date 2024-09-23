@@ -3,6 +3,8 @@
 - Host the blinks in our website. The blink url's become much more user friendly
 - Bug: Variants of the products price is not getting converted to USDC
 - Curreny changing page fix the NAN error
+- During the payment process if the reciever wallet address doesn't have any USDC, transaction failing. create a instruction to open the USDC ATA. Buyer will pay the fee ? research on this
+- AccessToken encryt and decrypt errors
 
 # Blinkify
 
