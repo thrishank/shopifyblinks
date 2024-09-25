@@ -5,6 +5,9 @@
 - Curreny changing page fix the NAN error
 - During the payment process if the reciever wallet address doesn't have any USDC, transaction failing. create a instruction to open the USDC ATA. Buyer will pay the fee ? research on this
 - AccessToken encryt and decrypt errors
+- If the blinks is already created then no need to generate again. Store the generated blinks in the database
+- Display the reciever wallet address after the blinks is generated
+- Add Analatyics to the website. Total number of blinks created, total number of products sold via blinks, Total number of shopify stores connected, Total transaction volume done via blinks
 
 # Blinkify
 
