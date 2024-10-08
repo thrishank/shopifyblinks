@@ -2,6 +2,8 @@
 
 Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
 
+WooCommerce Repo - https://github.com/thrishank/wooComblinks
+
 # Testing credantials
 
 ```
