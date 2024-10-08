@@ -1,14 +1,3 @@
-# Todo
-
-- Host the blinks in our website. The blink url's become much more user friendly
-- Bug: Variants of the products price is not getting converted to USDC
-- Curreny changing page fix the NAN error
-- During the payment process if the reciever wallet address doesn't have any USDC, transaction failing. create a instruction to open the USDC ATA. Buyer will pay the fee ? research on this
-- AccessToken encryt and decrypt errors
-- If the blinks is already created then no need to generate again. Store the generated blinks in the database
-- Display the reciever wallet address after the blinks is generated
-- Add Analatyics to the website. Total number of blinks created, total number of products sold via blinks, Total number of shopify stores connected, Total transaction volume done via blinks
-
 # Blinkify
 
 Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
@@ -115,3 +104,20 @@ The project follows a typical Next.js structure with some additional directories
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+# Todo
+
+- Host the blinks in our website. The blink url's become much more user friendly
+- Bug: Variants of the products price is not getting converted to USDC
+- Curreny changing page fix the NAN error
+
+- During the payment process if the reciever wallet address doesn't have any USDC, transaction failing. create a instruction to open the USDC ATA. Buyer will pay the fee ? research on this
+- If the blinks is already created then no need to generate again. Store the generated blinks in the database
+- Display the reciever wallet address during the blinks generation
+
+- Add Analatyics to the website. Total number of blinks created, total number of products sold via blinks, Total number of shopify stores connected, Total transaction volume done via blinks
+
+- add a pricing page free 10 blinks, create 2 blinks for 1$ plan, pay as you go plan
+- add database logic for this if they complete the free 10 blinks for their shopify webiste they shouldn't be login again and use
+- A public page where all the blinks are listed. People can buy the products using the blinks
+- Affilate marketing for the blinks. If a person refer a shopify store to use the blinks and they use the blinks then the person who refered will get 10% of the transaction fee

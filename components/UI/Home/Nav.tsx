@@ -9,6 +9,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { href: "/profile", label: "Profile" },
   { href: "/products", label: "Products" },
+  { href: "https://woocommerce.solanablinks.me", label: "WooCommerce" },
 ];
 
 export default function NavBar() {
