@@ -1,10 +1,19 @@
-# Blinkify
+<div align="center">
+  <a href="https://nextjs.org">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/thrishank/shopifyblinks/refs/heads/main/app/favicon.ico">
+      <img alt="Next.js logo" src="https://raw.githubusercontent.com/thrishank/shopifyblinks/refs/heads/main/app/favicon.ico" height="128">
+    </picture>
+  </a>
+  <h1>Blinkify</h1>
 
-Blinkify is a Next.js application that integrates Shopify stores with Solana blockchain technology, allowing merchants to create and share Solana Blinks for their products.
+</div>
+
+Blinkify is a Solana Dapp that integrates Shopify stores with Solana blockchain technology, allowing merchants to create Solana Blinks (Blockchain Links) for their products that can be teleported across the internet.
 
 WooCommerce Repo - https://github.com/thrishank/wooComblinks
 
-# Testing credantials
+# Testing credentials
 
 ```
 access_token: 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
@@ -15,17 +24,11 @@ shop: https://solanablinks.myshopify.com/
 
 [![Demo Video](https://img.youtube.com/vi/yzXBa84oRiI/0.jpg)](https://www.youtube.com/watch?v=yzXBa84oRiI&ab_channel=Thrishank)
 
-## Features
-
-- Shopify and wallet integration
-- Solana Blinks generation
-- Blinks Hosting (pending)
-
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or later)
+- Node.js
 - npm or yarn
 - Shopify store
 - Solana wallet
@@ -76,6 +79,8 @@ yarn dev
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
+6. Create a shopify developement Store(dev stores already have some products so you can test the app easily) and create a access token as specified in the profile page
+
 ## Project Structure
 
 The project follows a typical Next.js structure with some additional directories:
@@ -89,7 +94,7 @@ The project follows a typical Next.js structure with some additional directories
 
 - Home page: Introduces Solana Blinks and their benefits
 - Products page: Displays Shopify products and allows Blink generation
-- Profile management: Handles Merchant authentication and Shopify integration
+- Profile Page: Handles Merchant authentication and Shopify integration
 
 ## Technologies Used
 
